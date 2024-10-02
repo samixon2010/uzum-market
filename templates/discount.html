@@ -1,0 +1,40 @@
+{% extends 'main.html' %}
+
+
+{% block content %}<br><br><br><br><br><br><br><br>
+
+<style>
+    form {
+        border: 2px red solid;
+        width: 550px;
+        height: 300px;
+        margin-top: 5px;
+    }
+    button {
+        width: 60px;
+        height: 35px;
+        border: none;
+        background: transparent;
+        color: deeppink;
+        font-size: 30px;
+    }
+    button:hover {
+        border: 2px solid white;
+        height: 60px;
+        width: 90px;
+        transition-duration: 1s;
+        touch-action: 4s;
+        border-radius: 30px;
+    }
+</style>
+<body style="background: url(https://starwalk.space/gallery/images/what-is-space/1920x1080.jpg);">
+<center>
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h5 style="margin-top: 40px; color: green;">{{form.as_p}}</h5>
+    <button type="submit">save</button>
+</form>
+</center>
+</body>
+<br><br><br><br><br>
+{% endblock %} 

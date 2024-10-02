@@ -1,0 +1,73 @@
+
+{% extends 'main.html' %}
+
+    <head>
+        <title>My registration site</title>
+        {% block link %}
+        <style>
+            .container {
+                margin-left: 400px;
+                margin-right: 400px;
+            }
+            h1 {
+                text-align: center;
+                padding: 2% 10%;
+                color: red;
+            }
+            input {
+                border: none;
+                border-radius: 30px;
+                padding: 5% 25%;
+            }
+            form {
+                text-align: center;
+                padding: 4% 40%;
+            }
+            body {
+                background: url("https://images5.alphacoders.com/132/1328245.jpeg");
+            }
+            p {
+                color: red;
+            }
+            hr {
+                color: red;
+                width: 140px;
+            }
+            label {
+                color: burlywood;
+            }
+            button {
+                border: 3px solid green;
+                border-radius: 30px;
+                width: 70px;
+                height: 40px;
+                color: red;
+                background-color: azure;
+            }
+            button:hover {
+                border: 4px solid green;
+                background-color: blue;
+                color: yellow;
+            }
+        </style>
+        {% endblock %}
+        
+    {% block content %}
+        <h1>Registration</h1>
+        <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <p>Name</p><input type="text" name="name"><br>
+            <hr style="background: transparent;">
+            <p>Surname</p><input type="text" name="last_name"><br>
+            <hr style="background: transparent;">
+            <p>Email</p><input type="email" name="email"><br>
+            <hr style="background: transparent;">
+            <p>Password</p><input type="password" name="password"><br>
+            <hr style="background: transparent;">
+            <p>Phone Number<input type="text" name="phone_number"></p><br>
+            <button style="border-radius: 20px;" type="submit">send</button>
+        </form>
+      </div>
+    {% endblock %}
+</html>

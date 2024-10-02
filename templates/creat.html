@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+
+	
+
+
+{% block content %}
+
+	<div class="container ">
+		<h3> creat html</h3>
+		<br><br><br>
+		<div class="row ">
+			<div class="col-3">
+				{% if offer %}
+				<h2>{{offer}}</h2>
+				<button type="button"  class="btn btn-danger">
+					<a href="{% url 'home' %}" style="text-decoration: none; color: aliceblue;">No</a>
+				</button>
+				{% endif %}
+			</div>
+			<div class="col-5">
+				<form method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					{{form.as_p}}
+					<button type="submit" class="btn btn-primary">save</button>
+			  </form>
+			</div>
+			<div class="col-3"></div>
+		</div>
+<br><br>
+
+
+{% endblock %}

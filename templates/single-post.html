@@ -1,0 +1,258 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+<link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+<!-- Vendor CSS Files -->
+<link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+<link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+<link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+<link href="{% static 'assets/vendor/aos/aos.css" rel="stylesheet' %}">
+
+<!-- Template Main CSS Files -->
+<link href="{% static 'assets/css/variables.css' %}" rel="stylesheet">
+<link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+
+  <!-- End Header -->
+
+  <main id="main">
+
+    <section class="single-post-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9 post-content" data-aos="fade-up">
+
+            <!-- ======= Single Post Content ======= -->
+            <div class="single-post">
+              <div class="post-meta"><span class="date">{{a.category.name}}</span> <span class="mx-1">&bullet;</span> <span>{{a.created}}</span></div>
+              <h1 class="mb-5">{{a.name}}</h1>
+              
+                              <!-- carusel -->
+                              <div class="container-md" data-aos="fade-in">
+                                <div class="row">
+                                  <div class="col-12">
+                                    <div class="swiper sliderFeaturedPosts">
+                                      
+                                      <div class="swiper-wrapper" style="height: 400px; width: 300px;">
+                                        {% for photo in a.product_images.all %}
+                                        <div class="swiper-slide" style="height: 200px;">
+                                          <a href="" class="img-bg d-flex align-items-end" style="background-image: url({{photo.image.url}}); background-size: 20vw;">
+                                            
+                                            <div class="img-bg-inner">
+                                                         </div>
+                                          </a>
+                                        </div>
+                                        {% endfor %}
+                                      </div>
+                                      
+                                      
+                                      <div class="swiper-pagination"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              <!--  end carusel-->
+              <p>{{a.description|linebreaks}}</p>
+
+              <figure class="my-4">
+                
+                
+
+                
+
+            </div><!-- End Single Post Content -->
+
+            <!-- ======= Comments ======= -->
+            
+            <div class="comments">
+              {% if a.product_comments.exists %}
+              <div id="some"></div>
+              <h5 class="comment-title py-4">{{a.product_comments.count}}  Comments</h5>
+              
+              {% for comment in a.product_comments.all %}
+              {% if not comment.reply %}
+              <div class="comment d-flex mb-4">
+                <div class="flex-shrink-0">
+                  <div class="avatar avatar-sm rounded-circle">
+                    <img class="avatar-img" src="{{comment.user.photo.url}}" alt="" class="img-fluid">
+                  </div>
+                </div>
+                <div class="flex-grow-1 ms-2 ms-sm-3">
+                  <div class="comment-meta d-flex align-items-baseline">
+                    <h6 class="me-2">{{comment.user.username}}</h6>
+                    <span class="text-muted">2d</span>
+                  </div>
+                  <div class="comment-body">{{comment.comment}}
+                  </div>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{comment.id}}" data-bs-whatever="@mdo">reply</button>
+                  <!-- start modal -->
+                  <div class="modal fade" id="exampleModal{{comment.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          {% if user.is_authenticated %}
+                          <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                              <label for="message-text" class="col-form-label">Message:</label>
+                              <textarea class="form-control" id="message-text" name="reply"></textarea>
+                              <input type="hidden" name="comment_id" value="{{comment.id}}">
+                              <input type="hidden" name="name" value="some">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send message</button>
+                          </form>
+                          {% else %}
+                          <h3><a href="{% url 'login' %}">login</a></h3>
+                          {% endif%}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- end modal -->
+                  {% if comment.replies.exists %}
+                  <!-- start reply -->
+                  <div class="comment-replies bg-light p-3 mt-3 rounded">
+                    <h6 class="comment-replies-title mb-4 text-muted text-uppercase">{{comment.replies.count}} replies</h6>
+                    {% for reply in comment.replies.all %}
+                    <div class="reply d-flex mb-4">
+                      <div class="flex-shrink-0">
+                        <div class="avatar avatar-sm rounded-circle">
+                          <img class="avatar-img" src="{{reply.user.photo.url}}" alt="" class="img-fluid">
+                        </div>
+                      </div>
+                      <div class="flex-grow-1 ms-2 ms-sm-3">
+                        <div class="reply-meta d-flex align-items-baseline">
+                          <h6 class="mb-0 me-2">{{reply.user.uername}}</h6>
+                          <span class="text-muted">2d</span>
+                        </div>
+                        <div class="reply-body">
+                          {{reply.comment}}
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                    <div class="reply d-flex">
+                      
+                                          </div>
+                  </div>
+                  {% else %}
+                  <h6 class="comment-replies-title mb-4 text-muted text-uppercase">No replies</h6>
+                  {% endif %}
+                  <!-- modal start -->
+                 
+                  <!-- end reply -->
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+              
+
+            {% else %}
+            <h5 class="comment-title py-4">Izohlar mavjud emas ...</h5>
+            {% endif %}
+            </div><!-- End Comments -->
+
+            <!-- ======= Comments Form ======= -->
+            <div class="row justify-content-center mt-5">
+             
+              <div class="col-lg-12">
+                <h5 class="comment-title">Leave a Comment</h5>
+                <div class="row">
+                 
+                    <form action="" method="post">
+                      {% csrf_token %}
+                      <div class="col-12 mb-3"> 
+                        <label for="comment-message">Message</label>
+                        <textarea name="izoh" class="form-control" id="comment-message" placeholder="Enter your name" cols="30" rows="10"></textarea>
+                        <input type="hidden" name="name" value="some">
+                        <br>
+                        <div class="col-12">
+                          <input type="submit" class="btn btn-primary" value="Post comment">
+                        </div>
+                      </div>
+                    </form>
+                    
+                </div>
+              </div>
+            </div><!-- End Comments Form -->
+
+          </div>
+          <div class="col-md-3">
+            <!-- ======= Sidebar ======= -->
+            <div class="aside-block">
+
+              <ul class="nav nav-pills custom-tab-nav mb-4" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-popular-tab" data-bs-toggle="pill" data-bs-target="#pills-popular" type="button" role="tab" aria-controls="pills-popular" aria-selected="true">Similar</button>
+                </li>
+              </ul>
+
+              <div class="tab-content" id="pills-tabContent">
+
+                <!-- Popular -->
+                <div class="tab-pane fade show active" id="pills-popular" role="tabpanel" aria-labelledby="pills-popular-tab">
+                  {% for s in similar_products %}
+                  <a href="{% url 'detail' s.id %}">
+                  <div class="post-entry-1 border-bottom">
+                    <div class="post-meta"><span class="date">Sport</span> <span class="mx-1">&bullet;</span><span>{{s.created}}</span></div>
+                    <h2 class="mb-2"><a href="#">{{s.description | truncatewords:12}}</a></h2>
+                    <span class="author mb-3 d-block">{{s.name}}</span>
+                  </div>
+                </a>
+                  {% endfor %}
+                </div> <!-- End Popular -->
+
+
+              </div>
+            </div>
+              <ul class="aside-links list-unstyled">
+                {% for c in category %}
+                <li><a href="{% url 'home' %}?category={{c.id}}"><i class="bi bi-chevron-right"></i>{{c.name}}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="aside-block">
+                <h3 class="aside-title">Tags</h3>
+                <ul class="aside-tags list-unstyled">
+                  {% for i in tags %}
+                  <li><a href="{% url 'home' %}">{{i.name}}</a></li>
+                  {% endfor %}
+                  
+                </ul>
+              </div><!-- End Tags -->
+            </div><!-- End Categories -->
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main><!-- End #main -->
+  
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+  
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+{% endblock %}
