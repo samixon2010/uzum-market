@@ -31,7 +31,7 @@ def register(request):
 			a.set_password(parol)
 			a.save()
 			return redirect('home')
-	return render(request, 'contact.html', {"form":form})
+	return render(request, 'register.html', {"form":form})
 
 
 def home(request):
