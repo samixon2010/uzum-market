@@ -24,7 +24,7 @@ from accaunt.views import (
                         home,detail, about, category, 
                         contact, search,Login,Logout, 
                         detail,createlon, create_image,
-                        edit,delete,discount
+                        edit,delete,discount, register
                         )
 
 urlpatterns = [
@@ -42,6 +42,7 @@ urlpatterns = [
     path('edit/<int:id>/', edit, name='edit'),
     path('create/image/<int:id>/', create_image, name="create_image"),
     path('delete/<int:id>/', delete, name='delete'),
-    path('discount/', discount, name='discount')
+    path('discount/', discount, name='discount'),
+    path('register/', register, name='register')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
